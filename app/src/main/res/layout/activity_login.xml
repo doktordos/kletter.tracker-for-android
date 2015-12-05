@@ -1,0 +1,60 @@
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="ims.fhj.at.klettertracker.LoginActivity"
+        android:id="@+id/main"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/logo"
+            android:adjustViewBounds="true" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/user_mail"
+                android:hint="Benutzername"
+                android:textColor="#000"
+                style="@android:style/Theme.Material.Light" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/user_password"
+                android:hint="Password"
+                style="@android:style/Theme.Material.Light" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Anmelden"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:background="#1D81BE"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
