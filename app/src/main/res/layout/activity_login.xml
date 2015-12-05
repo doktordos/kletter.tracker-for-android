@@ -29,12 +29,13 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:ems="10"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/user_mail"
+                android:id="@+id/user_name"
                 android:hint="Benutzername"
                 android:textColor="#000"
+                android:text="root"
                 style="@android:style/Theme.Material.Light" />
 
             <EditText
@@ -45,6 +46,7 @@
                 android:layout_marginLeft="20dp"
                 android:id="@+id/user_password"
                 android:hint="Password"
+                android:text="root66"
                 style="@android:style/Theme.Material.Light" />
         </LinearLayout>
 
@@ -52,7 +54,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Anmelden"
-            android:id="@+id/button"
+            android:id="@+id/login_button"
             android:layout_gravity="center_horizontal"
             android:background="#1D81BE"
             android:textColor="#FFFFFF" />
