@@ -1,0 +1,30 @@
+TASK ims.fhj.at.klettertracker id=11
+  ACTIVITY ims.fhj.at.klettertracker/.LoginActivity d7b1b66 pid=636
+    Local FragmentActivity b7d109 State:
+      mCreated=truemResumed=true mStopped=false mReallyStopped=false
+      mLoadersStarted=true
+    FragmentManager misc state:
+      mHost=android.support.v4.app.FragmentActivity$HostCallbacks@148ed0b
+      mContainer=android.support.v4.app.FragmentActivity$HostCallbacks@148ed0b
+      mCurState=5 mStateSaved=false mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.PhoneWindow$DecorView{5c877e8 V.E..... ... 0,0-720,1280}
+        android.widget.LinearLayout{53ee01 V.E..... ... 0,0-720,1160}
+          android.view.ViewStub{c06d4a6 G.E..... ... 0,0-0,0 #10203a9 android:id/action_mode_bar_stub}
+          android.widget.FrameLayout{2174ee7 V.E..... ... 0,60-720,1160}
+            android.support.v7.widget.ActionBarOverlayLayout{ba12a94 V.E..... ... 0,0-720,1100 #7f0d007f app:id/decor_content_parent}
+              android.support.v7.widget.ContentFrameLayout{110693d V.E..... ... 0,140-720,1100 #1020002 android:id/content}
+                android.widget.LinearLayout{63b9532 V.E..... ... 0,0-720,960 #7f0d0091 app:id/main}
+                  android.support.v7.widget.AppCompatImageView{57ff283 V.ED.... ... 0,0-720,450 #7f0d0092 app:id/imageView2}
+                  android.widget.LinearLayout{7b05c00 V.E..... ... 0,450-720,678}
+                    android.support.v7.widget.AppCompatEditText{a1f5c39 VFED..CL F.. 50,15-720,114 #7f0d0093 app:id/user_name}
+                    android.support.v7.widget.AppCompatEditText{a89d27e VFED..CL ... 50,114-720,213 #7f0d0094 app:id/user_password}
+                  android.support.v7.widget.AppCompatButton{64533df VFED..C. ... 0,678-720,798 #7f0d0095 app:id/login_button}
+              android.support.v7.widget.ActionBarContainer{ebf382c V.ED.... ... 0,0-720,140 #7f0d0080 app:id/action_bar_container}
+                android.support.v7.widget.Toolbar{89082f5 V.E..... ... 0,0-720,140 #7f0d0081 app:id/action_bar}
+                  android.widget.TextView{bec988a V.ED.... ... 40,36-267,103}
+                  android.support.v7.widget.ActionMenuView{ef32efb V.E..... ... 620,0-720,140}
+                    android.support.v7.widget.ActionMenuPresenter$OverflowMenuButton{6fdab18 VFED..C. ... 0,10-100,130}
+                android.support.v7.widget.ActionBarContextView{b35971 G.E..... ... 0,0-0,0 #7f0d0082 app:id/action_context_bar}
+        android.view.View{3b356 V.ED.... ... 0,1160-720,1280 #1020030 android:id/navigationBarBackground}
+        android.view.View{cbbbfd7 V.ED.... ... 0,0-720,60 #102002f android:id/statusBarBackground}

@@ -1,0 +1,117 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ims.fhj.at.klettertracker.DetailsActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/noimage"
+        android:adjustViewBounds="true" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tableLayout"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Schwierigkeitsgrad: "
+                android:id="@+id/textView3"
+                android:layout_column="14" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="..."
+                android:id="@+id/textView7"
+                android:layout_column="14" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Standort: "
+                android:id="@+id/textView4"
+                android:layout_column="14" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="..."
+                android:id="@+id/textView6"
+                android:layout_column="14" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Abschnitt: "
+                android:id="@+id/textView5"
+                android:layout_column="14" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="..."
+                android:id="@+id/textView8"
+                android:layout_column="14" />
+        </TableRow>
+
+    </TableLayout>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Route Tracken"
+        android:id="@+id/track_button"
+        android:layout_gravity="center_horizontal"
+        android:background="#1D81BE"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/tableLayout"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="2dp" />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Route Bewerten"
+        android:id="@+id/rate_button"
+        android:layout_gravity="center_horizontal"
+        android:background="#1D81BE"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/track_button"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="2dp" />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Bewertungen ansehen"
+        android:id="@+id/ratings_button"
+        android:layout_gravity="center_horizontal"
+        android:background="#1D81BE"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/rate_button"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" />
+</RelativeLayout>
