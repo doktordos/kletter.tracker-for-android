@@ -4,4 +4,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_qrcode">QRCodeActivity</string>
+    <string name="title_activity_available_tracks">AvailableTracksActivity</string>
+    <string name="title_activity_activities">ActivitiesActivity</string>
+    <string name="title_activity_details">DetailsActivity</string>
 </resources>

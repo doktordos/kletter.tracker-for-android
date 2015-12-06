@@ -15,7 +15,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -26,12 +26,33 @@ public class HomeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
         final ImageButton qrCodeButton = (ImageButton) findViewById(R.id.qr_button);
         qrCodeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goToQRCodeReader();
+            }
+        });
+
+        final ImageButton manuelButton = (ImageButton) findViewById(R.id.man_button);
+        manuelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                goToAvailableTracks();
+            }
+        });
+
+        final ImageButton activityButton = (ImageButton) findViewById(R.id.act_button);
+        activityButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                goToActivities();
+            }
+        });
+
+        final ImageButton logoutButton = (ImageButton) findViewById(R.id.logout_button);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                logout();
             }
         });
     }
@@ -41,4 +62,23 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToAvailableTracks() {
+        // TODO: Go to ActivitiesActivity with all available tracks
+
+        Intent intent = new Intent(this, ActivitiesActivity.class);
+        intent.putExtra("title", "Verfügbare Routen");
+        startActivity(intent);
+    }
+
+    public void goToActivities() {
+        // TODO: Go to ActivitiesActivity with currently tracked tracks only
+
+        Intent intent = new Intent(this, ActivitiesActivity.class);
+        intent.putExtra("title", "Aktivitäten");
+        startActivity(intent);
+    }
+
+    public void logout() {
+        // TODO: Logout
+    }
 }
