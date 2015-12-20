@@ -10,6 +10,8 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -24,4 +26,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.google.android.gms:play-services:8.3.0'
     compile 'com.android.support:design:23.1.1'
+    compile 'junit:junit:4.12'
+
+    // Unit testing dependencies
+    testCompile 'junit:junit:4.12'
+    // Set this dependency if you want to use Mockito
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    // Set this dependency if you want to use Hamcrest matching
+    testCompile 'org.hamcrest:hamcrest-library:1.1'
+
 }

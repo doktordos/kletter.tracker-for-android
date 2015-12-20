@@ -83,6 +83,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void showDialog(String title, String message) {
+        AlertDialog dialog = createDialog(title, message);
+        dialog.show();
+    }
+
+    public AlertDialog createDialog(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setMessage(message)
@@ -93,10 +98,9 @@ public class LoginActivity extends AppCompatActivity {
                 // User clicked OK button
             }
         });
-
         AlertDialog dialog = builder.create();
-        dialog.show();
 
+        return dialog;
     }
 
     public void goToHome() {
