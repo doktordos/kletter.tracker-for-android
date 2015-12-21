@@ -9,7 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class HomeActivity extends AppCompatActivity {
+
+    public JSONObject user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+
+        try {
+            user = new JSONObject(this.getIntent().getStringExtra("user"));
+            System.out.println("HomeActivityUser: " + user.toString()); // WORKS !!!
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         final ImageButton qrCodeButton = (ImageButton) findViewById(R.id.qr_button);
         qrCodeButton.setOnClickListener(new View.OnClickListener() {

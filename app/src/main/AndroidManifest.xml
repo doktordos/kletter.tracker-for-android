@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ims.fhj.at.klettertracker" >
 
-    <!-- To access Google+ APIs: -->
+    <!-- To access Google+ APIs and the Internet: -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!--
  To retrieve OAuth 2.0 tokens or invalidate tokens to disconnect a user. This disconnect

@@ -35,7 +35,7 @@
                 android:id="@+id/user_name"
                 android:hint="Benutzername"
                 android:textColor="#000"
-                android:text="root"
+                android:text="hoesed"
                 style="@android:style/Theme.Material.Light" />
 
             <EditText
@@ -46,7 +46,7 @@
                 android:layout_marginLeft="20dp"
                 android:id="@+id/user_password"
                 android:hint="Password"
-                android:text="root66"
+                android:text="123456789"
                 style="@android:style/Theme.Material.Light" />
         </LinearLayout>
 

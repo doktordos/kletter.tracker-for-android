@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,9 +13,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
 public class LoginActivity extends AppCompatActivity {
 
     public String username, password;
+    public JSONObject user;
+
 
     public Activity getActivity() {
         return this;
@@ -25,6 +38,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         final EditText usernameInput = (EditText) findViewById(R.id.user_name);
         final EditText passwordInput = (EditText) findViewById(R.id.user_password);
 
@@ -32,17 +50,23 @@ public class LoginActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if ( usernameInput.getText().toString().equals("") || passwordInput.getText().toString().equals("")) {
+                if (usernameInput.getText().toString().equals("") || passwordInput.getText().toString().equals("")) {
                     showDialog("Fehler", "Bitte Benutzernamen und Passwort eingeben!");
                 } else {
                     username = usernameInput.getText().toString();
                     password = passwordInput.getText().toString();
 
-                    if (isValidUser(username, password)) {
-                        System.out.println("Valid User!");
-                        goToHome();
-                    } else {
-                        showDialog("Fehler", "Falscher Benutzername oder Passwort!");
+                    try {
+                        if (postCredentials(username, password)) {
+                            System.out.println("Login successfull -> User: " + user.getString("displayName"));
+                            goToHome();
+                        } else {
+                            showDialog("Fehler", "Falscher Benutzername oder Passwort!");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -72,14 +96,63 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
     public boolean isValidUser(String username, String password) {
         if (username.equals("root") && password.equals("root66")) {
             return true;
-
         } else {
             return false;
         }
+    }
+
+    public boolean postCredentials(String username, String password) throws IOException {
+
+        String url = "http://doktordos.dyndns.org:8080/auth/signin";
+        String charset = "UTF-8";
+        String data = "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
+
+        byte[] outputBytes = data.getBytes(charset);
+
+        //URLConnection connection = new URL(url).openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setDoOutput(true); // Triggers POST.
+        connection.setRequestProperty("Accept-Charset", charset);
+        connection.setRequestProperty("Content-Type", "application/json; charset=" + charset);
+
+        try (OutputStream output = connection.getOutputStream()) {
+            output.write(outputBytes);
+            output.close();
+        }
+
+        InputStream response = connection.getInputStream();
+
+        if (connection.getResponseCode() == 200) {
+
+            String reply;
+            StringBuffer sb = new StringBuffer();
+            try {
+                int chr;
+                while ((chr = response.read()) != -1) {
+                    sb.append((char) chr);
+                }
+                reply = sb.toString();
+            } finally {
+                response.close();
+            }
+
+            if (reply.contains("_id")) {
+                try {
+                    user = new JSONObject(reply);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return true;
+        } else {
+            System.err.println("ResponseCode: " + connection.getResponseCode());
+        }
+
+        return false;
     }
 
     public void showDialog(String title, String message) {
@@ -105,6 +178,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public void goToHome() {
         Intent intent = new Intent(this, HomeActivity.class);
+
+        if (user != null) {
+            intent.putExtra("user", user.toString());
+        }
+
         startActivity(intent);
     }
 }
