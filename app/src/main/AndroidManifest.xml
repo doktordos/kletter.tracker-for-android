@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ims.fhj.at.klettertracker" >
+    package="ims.fhj.at.klettertracker">
 
     <!-- To access Google+ APIs and the Internet: -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,7 +19,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -27,7 +27,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +38,7 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:parentActivityName=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ims.fhj.at.klettertracker.LoginActivity" />
@@ -47,19 +47,18 @@
             android:name=".QRCodeActivity"
             android:label="@string/title_activity_qrcode"
             android:parentActivityName=".HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ims.fhj.at.klettertracker.HomeActivity" />
         </activity>
         <activity
             android:name=".ActivitiesActivity"
-            android:label="@string/title_activity_activities" >
-        </activity>
+            android:label="@string/title_activity_activities"></activity>
         <activity
             android:name=".DetailsActivity"
-            android:label="@string/title_activity_details" >
-        </activity>
+            android:label="@string/title_activity_details"></activity>
+        <activity android:name=".ManualTrackingActivity"></activity>
     </application>
 
 </manifest>

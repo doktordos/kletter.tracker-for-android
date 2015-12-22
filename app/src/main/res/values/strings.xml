@@ -7,4 +7,5 @@
     <string name="title_activity_available_tracks">AvailableTracksActivity</string>
     <string name="title_activity_activities">ActivitiesActivity</string>
     <string name="title_activity_details">DetailsActivity</string>
+    <string name="scan">Scan</string>
 </resources>

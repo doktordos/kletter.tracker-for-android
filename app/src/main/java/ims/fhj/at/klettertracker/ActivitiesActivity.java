@@ -10,11 +10,29 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ActivitiesActivity extends AppCompatActivity {
+
+    private JSONObject user;
+    private JSONArray activities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +43,44 @@ public class ActivitiesActivity extends AppCompatActivity {
         setTitle(title);
 
         List valueList = new ArrayList<String>();
-        valueList.add("Dummy Track 1");
-        valueList.add("Dummy Track 2");
-        valueList.add("Dummy Track 3");
 
-        ListAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, valueList);
+        try {
+            user = new JSONObject(this.getIntent().getStringExtra("user"));
+
+            if (getActivities()) {
+                System.out.println("Activities loaded: " + activities.length());
+                showToast(activities.length() + " Aktivitäten geladen");
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (int i=0; i < activities.length(); i++)
+        {
+            try {
+                JSONObject oneObject = activities.getJSONObject(i);
+                /*
+                String dateWitWrongFormat = oneObject.getString("tracked");
+
+                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+                Date date = sf.parse(dateWitWrongFormat);
+
+                System.out.println(" Date " + date.toString());
+                */
+
+                valueList.add(oneObject.get("tracked"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        ListAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.simple_list_item_dark, valueList);
 
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
@@ -67,5 +118,49 @@ public class ActivitiesActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean getActivities() throws IOException {
+
+        URL url = new URL("http://doktordos.dyndns.org:8080/activities");
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+        try {
+            //InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            InputStream response = urlConnection.getInputStream();
+
+            if (urlConnection.getResponseCode() == 200) {
+
+                String reply;
+                StringBuffer sb = new StringBuffer();
+                try {
+                    int chr;
+                    while ((chr = response.read()) != -1) {
+                        sb.append((char) chr);
+                    }
+                    reply = sb.toString();
+                } finally {
+                    response.close();
+                }
+
+                if (reply.contains("_id")) {
+                    try {
+                        activities = new JSONArray(reply);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
+            }
+        }
+        finally {
+            urlConnection.disconnect();
+        }
+        return false;
+    }
+
+    public void showToast(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

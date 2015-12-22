@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,8 +26,8 @@ import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public String username, password;
-    public JSONObject user;
+    private String username, password;
+    private JSONObject user;
 
 
     public Activity getActivity() {
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         if (postCredentials(username, password)) {
                             System.out.println("Login successfull -> User: " + user.getString("displayName"));
-                            goToHome();
+                            goToHome(user);
                         } else {
                             showDialog("Fehler", "Falscher Benutzername oder Passwort!");
                         }
@@ -95,16 +96,9 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean postCredentials(String username, String password) throws IOException {
 
-    public boolean isValidUser(String username, String password) {
-        if (username.equals("root") && password.equals("root66")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean postCredentials(String username, String password) throws IOException {
+        showToast("Lade ...");
 
         String url = "http://doktordos.dyndns.org:8080/auth/signin";
         String charset = "UTF-8";
@@ -112,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
 
         byte[] outputBytes = data.getBytes(charset);
 
-        //URLConnection connection = new URL(url).openConnection();
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setDoOutput(true); // Triggers POST.
         connection.setRequestProperty("Accept-Charset", charset);
@@ -137,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                 reply = sb.toString();
             } finally {
                 response.close();
+                connection.disconnect();
             }
 
             if (reply.contains("_id")) {
@@ -155,12 +149,12 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
-    public void showDialog(String title, String message) {
+    private void showDialog(String title, String message) {
         AlertDialog dialog = createDialog(title, message);
         dialog.show();
     }
 
-    public AlertDialog createDialog(String title, String message) {
+    private AlertDialog createDialog(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setMessage(message)
@@ -176,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
         return dialog;
     }
 
-    public void goToHome() {
+    private void goToHome(JSONObject user) {
         Intent intent = new Intent(this, HomeActivity.class);
 
         if (user != null) {
@@ -184,5 +178,10 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         startActivity(intent);
+    }
+
+    public void showToast(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
