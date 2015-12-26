@@ -44,15 +44,6 @@
                 android:value="ims.fhj.at.klettertracker.LoginActivity" />
         </activity>
         <activity
-            android:name=".QRCodeActivity"
-            android:label="@string/title_activity_qrcode"
-            android:parentActivityName=".HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ims.fhj.at.klettertracker.HomeActivity" />
-        </activity>
-        <activity
             android:name=".ActivitiesActivity"
             android:label="@string/title_activity_activities"></activity>
         <activity

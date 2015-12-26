@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean postCredentials(String username, String password) throws IOException {
+    public boolean postCredentials(String username, String password) throws IOException {
 
         showToast("Lade ...");
 

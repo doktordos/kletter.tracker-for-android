@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +24,7 @@ public class HomeActivity extends AppCompatActivity {
 
         try {
             user = new JSONObject(this.getIntent().getStringExtra("user"));
-            showToast("Willkommen " + user.getString("displayName") + "!" );
+            //showToast("Willkommen " + user.getString("displayName") + "!" );
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -56,14 +59,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void goToQRCodeReader(JSONObject user) {
-        Intent intent = new Intent(this, QRCodeActivity.class);
-        intent.putExtra("title", "QR Code Tracker");
-
-        if (user != null) {
-            intent.putExtra("user", user.toString());
-        }
-
-        startActivity(intent);
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+        scanIntegrator.initiateScan();
     }
 
     public void goToManualTracking(JSONObject user) {
@@ -95,6 +92,34 @@ public class HomeActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+
+        if (scanningResult != null) {
+            //we have a result
+            String scanContent = scanningResult.getContents();
+            String scanFormat = scanningResult.getFormatName();
+
+            //formatTxt.setText("FORMAT: " + scanFormat);
+            //showToast("Scan: " + scanContent);
+
+            Intent nextIntent = new Intent(this, ManualTrackingActivity.class);
+            nextIntent.putExtra("title", "Verfügbare Routen");
+
+            if (user != null) {
+                nextIntent.putExtra("user", user.toString());
+            }
+
+            if (scanContent != null) {
+                nextIntent.putExtra("routeID", scanContent);
+            }
+            startActivity(nextIntent);
+        } else {
+            showToast("Scan nicht erfolgreich!");
+        }
+    }
+
 
     public void showToast(String message) {
         Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);

@@ -1,8 +1,8 @@
 package ims.fhj.at.klettertracker;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,12 +16,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,7 @@ import java.util.List;
 public class ManualTrackingActivity extends AppCompatActivity {
 
     private JSONObject user;
+    private JSONObject route;
     private JSONArray climbingroutes;
 
     @Override
@@ -46,12 +44,29 @@ public class ManualTrackingActivity extends AppCompatActivity {
 
             if (getClimbingRoutes()) {
                 System.out.println("Routes loaded: " + climbingroutes.length());
-                showToast(climbingroutes.length() + " Routen geladen");
+                //showToast(climbingroutes.length() + " Routen geladen");
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String routeID = this.getIntent().getStringExtra("routeID");
+
+            if (routeID != null && climbingroutes.toString().contains(routeID)) {
+
+                for(int i = 0; i < climbingroutes.length(); i++) {
+                    JSONObject oneObject = climbingroutes.getJSONObject(i);
+                    if(oneObject.getString("_id").equals(routeID)) {
+                        route = climbingroutes.getJSONObject(i);
+                    }
+                }
+                goToDetails(route);
+            }
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -77,8 +92,7 @@ public class ManualTrackingActivity extends AppCompatActivity {
                                     int position, long id) {
 
                 try {
-                    JSONObject route = climbingroutes.getJSONObject((int)id);
-
+                    route = climbingroutes.getJSONObject((int)id);
                     goToDetails(route);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -92,12 +106,12 @@ public class ManualTrackingActivity extends AppCompatActivity {
     public void goToDetails(JSONObject route) {
         Intent intent = new Intent(this, DetailsActivity.class);
 
-        if (route != null) {
-            intent.putExtra("route", route.toString());
-        }
-
         if (user != null) {
             intent.putExtra("user", user.toString());
+        }
+
+        if (route != null) {
+            intent.putExtra("route", route.toString());
         }
 
         startActivity(intent);
