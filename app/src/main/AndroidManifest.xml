@@ -45,11 +45,12 @@
         </activity>
         <activity
             android:name=".ActivitiesActivity"
-            android:label="@string/title_activity_activities"></activity>
+            android:label="@string/title_activity_activities" />
         <activity
             android:name=".DetailsActivity"
-            android:label="@string/title_activity_details"></activity>
-        <activity android:name=".ManualTrackingActivity"></activity>
+            android:label="@string/title_activity_details" />
+        <activity android:name=".ManualTrackingActivity" />
+        <activity android:name=".RatingsActivity"></activity>
     </application>
 
 </manifest>

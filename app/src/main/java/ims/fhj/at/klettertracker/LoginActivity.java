@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("Anmelden");
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -65,8 +66,10 @@ public class LoginActivity extends AppCompatActivity {
                             showDialog("Fehler", "Falscher Benutzername oder Passwort!");
                         }
                     } catch (IOException e) {
+                        showDialog("Fehler", "Falscher Benutzername oder Passwort!");
                         e.printStackTrace();
                     } catch (JSONException e) {
+                        showDialog("Fehler", "Falscher Benutzername oder Passwort!");
                         e.printStackTrace();
                     }
                 }
