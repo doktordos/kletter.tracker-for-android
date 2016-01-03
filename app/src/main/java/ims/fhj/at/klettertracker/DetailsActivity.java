@@ -163,13 +163,13 @@ public class DetailsActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean postRating(String userID, String routeID, String comment) throws IOException {
+    private boolean postRating(String userID, String routeID, String comment, String routeRating, String difficultyRating) throws IOException {
 
         showToast("Lade ...");
 
         String url = "http://doktordos.dyndns.org:8080/ratings";
         String charset = "UTF-8";
-        String data = "{\"climber\":\""+userID+"\",\"climbingroute\":\""+routeID+"\",\"comment\":\""+comment+"\",\"providersShared\":[]}";
+        String data = "{\"user\":\""+userID+"\",\"climbingroute\":\""+routeID+"\",\"comment\":\""+comment+"\",\"ratingRoute\":\""+routeRating+"\",\"ratingDifficulty\":\""+difficultyRating+"\",\"providersShared\":[]}";
 
         byte[] outputBytes = data.getBytes(charset);
 
@@ -253,7 +253,7 @@ public class DetailsActivity extends AppCompatActivity {
                 // User clicked Absenden button
                 if (input.getText().toString().equals("") == false) {
                     try {
-                        if(postRating(user.getString("_id"), route.getString("_id"), input.getText().toString())) {
+                        if(postRating(user.getString("_id"), route.getString("_id"), input.getText().toString(), "1", "1")) {
                             showToast("Route erfolgreich bewertet!");
                         } else {
                             showToast("Bewertung fehlgeschlagen!");
