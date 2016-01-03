@@ -1,7 +1,5 @@
 package ims.fhj.at.klettertracker;
 
-import android.app.AlertDialog;
-
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -23,12 +21,12 @@ public class LoginActivityTest {
 
     @org.junit.Test
     public void testIsValidUser() throws Exception {
-        //Assert.assertEquals(true, login.isValidUser("root", "root66"));
+        Assert.assertEquals(true, login.postCredentials("hoesed", "123456789"));
     }
 
     @org.junit.Test
     public void testIsNotValidUser() throws Exception {
-        //Assert.assertEquals(false, login.isValidUser("toor", "root66"));
+        Assert.assertEquals(false, login.postCredentials("root", "password"));
     }
 
     @Test
