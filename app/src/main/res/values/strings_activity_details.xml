@@ -1,0 +1,17 @@
+<resources>
+    <string name="difficulty">Schwierigkeitsgrad: </string>
+    <string name="color">Farbe: </string>
+    <string name="section">Abschnitt: </string>
+    <string name="placeholder">...</string>
+    <string name="track">Route tracken</string>
+    <string name="rate">Route bewerten</string>
+    <string name="ratings">Bewertungen ansehen</string>
+    <string name="rating_empty">Bewertungsfeld leer!</string>
+    <string name="success_tracking">Route erfolgreich getracked!</string>
+    <string name="error_tracking">Tracking fehlgeschlagen!</string>
+    <string name="success_rating">Route erfolgreich bewertet!</string>
+    <string name="error_rating">Bewertung fehlgeschlagen!</string>
+    <string name="submit">Absenden</string>
+    <string name="rating_title">Bewertung</string>
+    <string name="rating_text">Geben Sie bitte hier Ihre Bewertung ein:</string>
+</resources>

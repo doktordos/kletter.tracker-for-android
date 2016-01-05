@@ -27,6 +27,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +39,7 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -45,12 +47,23 @@
         </activity>
         <activity
             android:name=".ActivitiesActivity"
-            android:label="@string/title_activity_activities" />
+            android:label="@string/title_activity_activities"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DetailsActivity"
-            android:label="@string/title_activity_details" />
-        <activity android:name=".ManualTrackingActivity" />
-        <activity android:name=".RatingsActivity"></activity>
+            android:label="@string/title_activity_details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ManualTrackingActivity"
+            android:label="@string/title_activity_manual"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RatingsActivity"
+            android:label="@string/title_activity_ratings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait" />
     </application>
-
 </manifest>

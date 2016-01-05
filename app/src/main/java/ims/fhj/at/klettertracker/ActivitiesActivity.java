@@ -3,14 +3,11 @@ package ims.fhj.at.klettertracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +17,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ActivitiesActivity extends AppCompatActivity {
@@ -44,12 +44,10 @@ public class ActivitiesActivity extends AppCompatActivity {
 
             if (getActivities()) {
                 System.out.println("Activities loaded: " + activities.length());
-                //showToast(activities.length() + " Aktivitäten geladen");
             }
 
             if (getClimbingRoutes()) {
                 System.out.println("Routes loaded: " + climbingroutes.length());
-                //showToast(climbingroutes.length() + " Routen geladen");
             }
 
 
@@ -63,19 +61,22 @@ public class ActivitiesActivity extends AppCompatActivity {
         {
             try {
                 JSONObject oneObject = activities.getJSONObject(i);
-                /*
-                String dateWitWrongFormat = oneObject.getString("tracked");
+                JSONObject routeObject = oneObject.getJSONObject("climbingroute");
 
-                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                String dateWithWrongFormat = oneObject.getString("tracked");
 
-                Date date = sf.parse(dateWitWrongFormat);
+                SimpleDateFormat wf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                SimpleDateFormat rf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
-                System.out.println(" Date " + date.toString());
-                */
+                Date date = wf.parse(dateWithWrongFormat);
 
-                valueList.add(oneObject.get("tracked"));
+                //System.out.println(" Date " + rf.format(date).toString());
+
+                valueList.add(rf.format(date).toString() + " / " + routeObject.getString("name"));
 
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
@@ -92,10 +93,8 @@ public class ActivitiesActivity extends AppCompatActivity {
                 String routeID;
 
                 try {
-                    JSONObject activityObject = activities.getJSONObject((int)id);
+                    JSONObject activityObject = activities.getJSONObject((int) id);
                     JSONObject routeObject = activityObject.getJSONObject("climbingroute");
-
-                    //System.out.println(routeObject.toString());
 
                     routeID = routeObject.getString("_id");
 
@@ -131,35 +130,12 @@ public class ActivitiesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_activities, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public boolean getActivities() throws IOException {
 
         URL url = new URL("http://doktordos.dyndns.org:8080/activities");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
         try {
-            //InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             InputStream response = urlConnection.getInputStream();
 
             if (urlConnection.getResponseCode() == 200) {
@@ -198,7 +174,6 @@ public class ActivitiesActivity extends AppCompatActivity {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
         try {
-            //InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             InputStream response = urlConnection.getInputStream();
 
             if (urlConnection.getResponseCode() == 200) {
@@ -229,10 +204,5 @@ public class ActivitiesActivity extends AppCompatActivity {
             urlConnection.disconnect();
         }
         return false;
-    }
-
-    public void showToast(String message) {
-        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
-        toast.show();
     }
 }

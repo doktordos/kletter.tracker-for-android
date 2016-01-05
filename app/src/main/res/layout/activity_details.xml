@@ -18,7 +18,7 @@
         android:layout_below="@+id/imageView"
         android:layout_alignParentStart="true"
         android:id="@+id/tableLayout"
-        android:paddingBottom="20dp"
+        android:paddingBottom="10dp"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
@@ -29,17 +29,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Schwierigkeitsgrad: "
+                android:text="@string/difficulty"
                 android:id="@+id/textView3"
-                android:layout_column="14" />
+                android:layout_column="14"
+                android:textSize="20dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="..."
+                android:text="@string/placeholder"
                 android:id="@+id/textViewDifficulty"
-                android:layout_column="14" />
+                android:layout_column="14"
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp" />
         </TableRow>
         <TableRow
             android:layout_width="match_parent"
@@ -47,17 +48,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Farbe: "
+                android:text="@string/color"
                 android:id="@+id/textView4"
-                android:layout_column="14" />
+                android:layout_column="14"
+                android:textSize="20dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="..."
+                android:text="@string/placeholder"
                 android:id="@+id/textViewColor"
-                android:layout_column="14" />
+                android:layout_column="14"
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp" />
         </TableRow>
         <TableRow
             android:layout_width="match_parent"
@@ -65,24 +67,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Abschnitt: "
+                android:text="@string/section"
                 android:id="@+id/textView5"
-                android:layout_column="14" />
+                android:layout_column="14"
+                android:textSize="20dp" />
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="..."
+                android:text="@string/placeholder"
                 android:id="@+id/textViewSection"
-                android:layout_column="14" />
+                android:layout_column="14"
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp" />
         </TableRow>
 
     </TableLayout>
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Route Tracken"
+        android:text="@string/track"
         android:id="@+id/track_button"
         android:layout_gravity="center_horizontal"
         android:background="#1D81BE"
@@ -94,7 +97,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Route Bewerten"
+        android:text="@string/rate"
         android:id="@+id/rate_button"
         android:layout_gravity="center_horizontal"
         android:background="#1D81BE"
@@ -106,7 +109,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Bewertungen ansehen"
+        android:text="@string/ratings"
         android:id="@+id/ratings_button"
         android:layout_gravity="center_horizontal"
         android:background="#1D81BE"

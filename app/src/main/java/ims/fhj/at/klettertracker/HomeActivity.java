@@ -87,9 +87,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public void logout() {
         Intent intent = new Intent(this, LoginActivity.class);
-
-        // TODO: Logout /auth/signout über GET
-
         startActivity(intent);
     }
 
@@ -99,10 +96,7 @@ public class HomeActivity extends AppCompatActivity {
         if (scanningResult != null) {
             //we have a result
             String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
-
-            //formatTxt.setText("FORMAT: " + scanFormat);
-            //showToast("Scan: " + scanContent);
+            //String scanFormat = scanningResult.getFormatName();
 
             Intent nextIntent = new Intent(this, ManualTrackingActivity.class);
             nextIntent.putExtra("title", "Verfügbare Routen");
@@ -116,7 +110,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             startActivity(nextIntent);
         } else {
-            showToast("Scan nicht erfolgreich!");
+            showToast(getString(R.string.error_scan));
         }
     }
 

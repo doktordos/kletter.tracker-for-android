@@ -7,27 +7,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
+import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends AppCompatActivity {
 
     private String username, password;
     private JSONObject user;
+    boolean testing = false;
 
 
     public Activity getActivity() {
@@ -38,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setTitle("Anmelden");
+        setTitle(getString(R.string.action_sign_in));
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -48,28 +50,58 @@ public class LoginActivity extends AppCompatActivity {
         final EditText usernameInput = (EditText) findViewById(R.id.user_name);
         final EditText passwordInput = (EditText) findViewById(R.id.user_password);
 
+        if (testing == true) {
+            usernameInput.setText("hoesed", TextView.BufferType.EDITABLE);
+            passwordInput.setText("123456789", TextView.BufferType.EDITABLE);
+        }
+
+        if (this.getIntent().getStringExtra("username") != null && this.getIntent().getStringExtra("password") != null) {
+            usernameInput.setText(this.getIntent().getStringExtra("username"), TextView.BufferType.EDITABLE);
+            passwordInput.setText(this.getIntent().getStringExtra("password"), TextView.BufferType.EDITABLE);
+        }
+
+        final Button registerButton = (Button) findViewById(R.id.register_button);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                goToRegister();
+            }
+        });
+
         final Button button = (Button) findViewById(R.id.login_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 if (usernameInput.getText().toString().equals("") || passwordInput.getText().toString().equals("")) {
-                    showDialog("Fehler", "Bitte Benutzernamen und Passwort eingeben!");
+                    showDialog(getString(R.string.error_title), getString(R.string.error_invalid_credentials));
                 } else {
                     username = usernameInput.getText().toString();
                     password = passwordInput.getText().toString();
 
                     try {
-                        if (postCredentials(username, password)) {
-                            System.out.println("Login successfull -> User: " + user.getString("displayName"));
-                            goToHome(user);
-                        } else {
-                            showDialog("Fehler", "Falscher Benutzername oder Passwort!");
-                        }
-                    } catch (IOException e) {
-                        showDialog("Fehler", "Falscher Benutzername oder Passwort!");
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        showDialog("Fehler", "Falscher Benutzername oder Passwort!");
+                        postCredentials(username, password, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                                String reply = new String(bytes, StandardCharsets.UTF_8);
+
+                                if (reply.contains("_id")) {
+                                    try {
+                                        user = new JSONObject(reply);
+                                        System.out.println("Login successfull -> User: " + user.getString("displayName"));
+                                        goToHome(user);
+                                    } catch (JSONException e) {
+                                        showDialog(getString(R.string.error_title), getString(R.string.error_incorrect_user_password));
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                                showDialog(getString(R.string.error_title), getString(R.string.error_incorrect_user_password));
+                            }
+                        });
+                    } catch (Exception e) {
+                        showDialog(getString(R.string.error_title), getString(R.string.error_incorrect_user_password));
                         e.printStackTrace();
                     }
                 }
@@ -77,79 +109,17 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public boolean postCredentials(String username, String password) throws IOException {
-
-        showToast("Lade ...");
+    public void postCredentials(String username, String password, AsyncHttpResponseHandler responseHandler) throws IOException {
+        showToast(getString(R.string.loading));
 
         String url = "http://doktordos.dyndns.org:8080/auth/signin";
-        String charset = "UTF-8";
-        String data = "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
 
-        byte[] outputBytes = data.getBytes(charset);
+        RequestParams params = new RequestParams();
+        params.add("username", username);
+        params.add("password", password);
 
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setDoOutput(true); // Triggers POST.
-        connection.setRequestProperty("Accept-Charset", charset);
-        connection.setRequestProperty("Content-Type", "application/json; charset=" + charset);
-
-        try (OutputStream output = connection.getOutputStream()) {
-            output.write(outputBytes);
-            output.close();
-        }
-
-        InputStream response = connection.getInputStream();
-
-        if (connection.getResponseCode() == 200) {
-
-            String reply;
-            StringBuffer sb = new StringBuffer();
-            try {
-                int chr;
-                while ((chr = response.read()) != -1) {
-                    sb.append((char) chr);
-                }
-                reply = sb.toString();
-            } finally {
-                response.close();
-                connection.disconnect();
-            }
-
-            if (reply.contains("_id")) {
-                try {
-                    user = new JSONObject(reply);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return true;
-        } else {
-            System.err.println("ResponseCode: " + connection.getResponseCode());
-        }
-
-        return false;
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(url, params, responseHandler);
     }
 
     private void showDialog(String title, String message) {
@@ -163,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
         builder.setMessage(message)
                 .setTitle(title);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }
@@ -180,6 +150,11 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("user", user.toString());
         }
 
+        startActivity(intent);
+    }
+
+    private void goToRegister() {
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 

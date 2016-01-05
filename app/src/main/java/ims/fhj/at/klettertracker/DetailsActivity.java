@@ -7,11 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +28,10 @@ public class DetailsActivity extends AppCompatActivity {
     private JSONObject user;
     private JSONObject route;
 
+    public Activity getActivity() {
+        return this;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,7 @@ public class DetailsActivity extends AppCompatActivity {
         final TextView difficultyTextView = (TextView) findViewById(R.id.textViewDifficulty);
         final TextView colorTextView = (TextView) findViewById(R.id.textViewColor);
         final TextView sectionTextView = (TextView) findViewById(R.id.textViewSection);
+        final ImageView imgView = (ImageView) findViewById(R.id.imageView);
 
         try {
             user = new JSONObject(this.getIntent().getStringExtra("user"));
@@ -49,8 +53,15 @@ public class DetailsActivity extends AppCompatActivity {
                 difficultyTextView.setText(route.getString("difficulty"));
                 colorTextView.setText(route.getString("colorCode"));
                 sectionTextView.setText(sectionObject.getString("code"));
+
+                if (route.getString("name").equalsIgnoreCase("nordwand")) {
+                    imgView.setImageResource(R.drawable.nordwand);
+                } else if (route.getString("name").equalsIgnoreCase("suedwand")) {
+                    imgView.setImageResource(R.drawable.suedwand);
+                }
+
             } else {
-                setTitle("Nicht gefunden");
+                setTitle(getString(R.string.not_found));
             }
 
         } catch (JSONException e) {
@@ -60,12 +71,11 @@ public class DetailsActivity extends AppCompatActivity {
         final Button trackButton = (Button) findViewById(R.id.track_button);
         trackButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //goToQRCodeReader(user);
                 try {
                     if(postTracking(user.getString("_id"), route.getString("_id"), "manual")) {
-                        showToast("Erfolgreich getracked!");
+                        showToast(getString(R.string.success_tracking));
                     } else {
-                        showToast("Tracking fehlgeschlagen!");
+                        showToast(getString(R.string.error_tracking));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -78,7 +88,7 @@ public class DetailsActivity extends AppCompatActivity {
         final Button rateButton = (Button) findViewById(R.id.rate_button);
         rateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                showRatingDialog("Rating", "Geben Sie bitte hier Ihre Bewertung ein:");
+                showRatingDialog(getString(R.string.rating_title), getString(R.string.rating_text));
             }
         });
 
@@ -90,35 +100,9 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
-    public Activity getActivity() {
-        return this;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_details, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private boolean postTracking(String userID, String routeID, String trackingMode) throws IOException {
 
-        showToast("Lade ...");
+        showToast(getString(R.string.loading));
 
         String url = "http://doktordos.dyndns.org:8080/activities";
         String charset = "UTF-8";
@@ -165,7 +149,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private boolean postRating(String userID, String routeID, String comment, String routeRating, String difficultyRating) throws IOException {
 
-        showToast("Lade ...");
+        showToast(getString(R.string.loading));
 
         String url = "http://doktordos.dyndns.org:8080/ratings";
         String charset = "UTF-8";
@@ -210,11 +194,6 @@ public class DetailsActivity extends AppCompatActivity {
         return false;
     }
 
-    public void showToast(String message) {
-        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
     private void goToRatings(JSONObject user, JSONObject route) {
         Intent intent = new Intent(this, RatingsActivity.class);
 
@@ -228,7 +207,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
-
 
     private void showRatingDialog(String title, String message) {
         AlertDialog dialog = createDialog(title, message);
@@ -248,15 +226,14 @@ public class DetailsActivity extends AppCompatActivity {
 
         builder.setView(input);
 
-        builder.setPositiveButton("Absenden", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.submit), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked Absenden button
                 if (input.getText().toString().equals("") == false) {
                     try {
                         if(postRating(user.getString("_id"), route.getString("_id"), input.getText().toString(), "1", "1")) {
-                            showToast("Route erfolgreich bewertet!");
+                            showToast(getString(R.string.success_rating));
                         } else {
-                            showToast("Bewertung fehlgeschlagen!");
+                            showToast(getString(R.string.error_rating));
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -264,12 +241,12 @@ public class DetailsActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    showToast("Bewertungsfeld leer!");
+                    showToast(getString(R.string.rating_empty));
                 }
             }
         });
 
-        builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.abort), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked Abbrechen button
             }
@@ -278,5 +255,10 @@ public class DetailsActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
 
         return dialog;
+    }
+
+    public void showToast(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
