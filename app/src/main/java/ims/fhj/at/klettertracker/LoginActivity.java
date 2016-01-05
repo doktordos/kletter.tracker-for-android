@@ -29,8 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String username, password;
     private JSONObject user;
-    boolean testing = false;
-
+    //boolean testing = false;
 
     public Activity getActivity() {
         return this;
@@ -49,11 +48,6 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText usernameInput = (EditText) findViewById(R.id.user_name);
         final EditText passwordInput = (EditText) findViewById(R.id.user_password);
-
-        if (testing == true) {
-            usernameInput.setText("hoesed", TextView.BufferType.EDITABLE);
-            passwordInput.setText("123456789", TextView.BufferType.EDITABLE);
-        }
 
         if (this.getIntent().getStringExtra("username") != null && this.getIntent().getStringExtra("password") != null) {
             usernameInput.setText(this.getIntent().getStringExtra("username"), TextView.BufferType.EDITABLE);
